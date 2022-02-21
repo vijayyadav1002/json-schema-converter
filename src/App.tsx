@@ -4,14 +4,15 @@ import toJsonSchema from 'generate-schema';
 import './App.css';
 
 const addRequiredProperties = (data: any): any => {
-    if (typeof data?.properties === 'object') {
+    if (data.type === 'array') {
+        return addRequiredProperties(data.items);
+    }
+
+    if (typeof data.type === 'object') {
         data.required = Object.keys(data.properties);
         for(let i = 0; i < data.required.length; i++) {
             addRequiredProperties(data.properties[data.required[i]]);
         }
-    }
-    if (data.type === 'array') {
-        return addRequiredProperties(data.items);
     }
     return data;
 }
