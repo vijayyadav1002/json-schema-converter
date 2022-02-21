@@ -10,6 +10,9 @@ const addRequiredProperties = (data: any): any => {
             addRequiredProperties(data.properties[data.required[i]]);
         }
     }
+    if (data.type === 'array') {
+        return addRequiredProperties(data.items);
+    }
     return data;
 }
 
