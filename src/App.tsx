@@ -3,7 +3,14 @@ import React, {useState} from 'react';
 import toJsonSchema from 'generate-schema';
 import './App.css';
 
-const addRequiredProperties = (data: any): any => {
+interface SchemaType {
+    type: string,
+    items: SchemaType,
+    properties: Partial<any>,
+    required: Array<string>
+}
+
+const addRequiredProperties = (data: SchemaType): SchemaType => {
     if (data.type === 'array') {
         return addRequiredProperties(data.items);
     }
@@ -15,7 +22,7 @@ const addRequiredProperties = (data: any): any => {
         }
     }
     return data;
-}
+};
 
 function App(): JSX.Element {
     const [error, setError] = useState('');
@@ -23,7 +30,7 @@ function App(): JSX.Element {
     const [jsonInput, setJsonInput] = useState('{"name": "Dan"}');
     const [schemaInput, setSchemaInput] = useState('{}');
     const [isChecked, setIsChecked] = useState(true);
-    const convertToSchema = (event: any) => {
+    const convertToSchema = (event: React.MouseEvent<HTMLButtonElement>) => {
         event && event.preventDefault();
         try {
             const toSchema = toJsonSchema.json(JSON.parse(jsonInput));
@@ -60,7 +67,7 @@ function App(): JSX.Element {
                         <span>All Required</span>
                     </label>
                 </div>
-                <textarea rows={20} cols={50} value={schemaInput}/>
+                <textarea rows={20} cols={50} value={schemaInput} readOnly/>
             </header>
         </div>
     );
