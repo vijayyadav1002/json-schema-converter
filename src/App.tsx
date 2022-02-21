@@ -8,7 +8,7 @@ const addRequiredProperties = (data: any): any => {
         return addRequiredProperties(data.items);
     }
 
-    if (typeof data.type === 'object') {
+    if (data.type === 'object') {
         data.required = Object.keys(data.properties);
         for(let i = 0; i < data.required.length; i++) {
             addRequiredProperties(data.properties[data.required[i]]);
