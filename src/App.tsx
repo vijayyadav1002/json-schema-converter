@@ -16,6 +16,7 @@ function App(): JSX.Element {
                 schema.additionalProperties = isChecked;
             }
             setSchemaInput(JSON.stringify(schema));
+            setError('');
         } catch (e: any) {
             setError(e.message);
         }
