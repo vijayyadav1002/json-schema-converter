@@ -1,7 +1,17 @@
 import React, {useState} from 'react';
 // @ts-ignore
-import toJsonSchema from 'to-json-schema';
+import toJsonSchema from 'generate-schema';
 import './App.css';
+
+const addRequiredProperties = (data: any): any => {
+    if (typeof data?.properties === 'object') {
+        data.required = Object.keys(data.properties);
+        for(let i = 0; i < data.required.length; i++) {
+            addRequiredProperties(data.properties[data.required[i]]);
+        }
+    }
+    return data;
+}
 
 function App(): JSX.Element {
     const [error, setError] = useState('');
@@ -12,7 +22,9 @@ function App(): JSX.Element {
     const convertToSchema = (event: any) => {
         event && event.preventDefault();
         try {
-            const schema = toJsonSchema(JSON.parse(jsonInput), {required});
+            const toSchema = toJsonSchema.json(JSON.parse(jsonInput));
+            const schema = required ? addRequiredProperties(toSchema) : toSchema
+            delete schema.$schema;
             if (isChecked) {
                 schema.additionalProperties = isChecked;
             }
