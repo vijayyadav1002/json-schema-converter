@@ -35,10 +35,8 @@ function App(): JSX.Element {
         try {
             const toSchema = toJsonSchema.json(JSON.parse(jsonInput));
             const schema = required ? addRequiredProperties(toSchema) : toSchema
+            schema.additionalProperties = isChecked;
             delete schema.$schema;
-            if (isChecked) {
-                schema.additionalProperties = isChecked;
-            }
             setSchemaInput(JSON.stringify(schema));
             setError('');
         } catch (e: any) {
