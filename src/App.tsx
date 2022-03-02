@@ -4,6 +4,8 @@ import toJsonSchema from 'generate-schema';
 import './App.css';
 // @ts-ignore
 import jsBeautify from 'js-beautify';
+// @ts-ignore
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 interface SchemaType {
     type: string,
@@ -33,6 +35,11 @@ function App(): JSX.Element {
     const [jsonInput, setJsonInput] = useState('{"name": "Dan"}');
     const [schemaInput, setSchemaInput] = useState('{}');
     const [isChecked, setIsChecked] = useState(true);
+    const [copy, setCopy] = useState(false);
+    const setCopied = () => {
+        setCopy(true);
+        setTimeout(() => setCopy(false), 1000);
+    }
     const convertToSchema = (event: React.MouseEvent<HTMLButtonElement>) => {
         event && event.preventDefault();
         try {
@@ -60,6 +67,12 @@ function App(): JSX.Element {
                 <div className='button-group'>
                     <button onClick={convertToSchema}>Convert</button>
                     <button onClick={clear}>Clear</button>
+                    <CopyToClipboard text={schemaInput}
+                                     onCopy={() => setCopied()}>
+                        <button>Copy</button>
+                    </CopyToClipboard>
+                </div>
+                <div>
                     <label htmlFor='additional-properties'>
                         <input type='checkbox' checked={isChecked} id='additional-properties' onChange={() => setIsChecked(!isChecked)}/>
                         <span>Additional Properties</span>
@@ -73,6 +86,7 @@ function App(): JSX.Element {
                         <span>Beautify</span>
                     </label>
                 </div>
+                {copy ? <span style={{color: 'Yellow'}}>Copied.</span> : null}
                 <textarea rows={20} cols={50} value={schemaInput} readOnly/>
             </header>
         </div>
