@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 // @ts-ignore
 import toJsonSchema from 'generate-schema';
 import './App.css';
+// @ts-ignore
+import jsBeautify from 'js-beautify';
 
 interface SchemaType {
     type: string,
@@ -27,6 +29,7 @@ const addRequiredProperties = (data: SchemaType): SchemaType => {
 function App(): JSX.Element {
     const [error, setError] = useState('');
     const [required, setRequired] = useState(true);
+    const [beautify, setBeautify] = useState(true);
     const [jsonInput, setJsonInput] = useState('{"name": "Dan"}');
     const [schemaInput, setSchemaInput] = useState('{}');
     const [isChecked, setIsChecked] = useState(true);
@@ -37,7 +40,8 @@ function App(): JSX.Element {
             const schema = required ? addRequiredProperties(toSchema) : toSchema
             schema.additionalProperties = isChecked;
             delete schema.$schema;
-            setSchemaInput(JSON.stringify(schema));
+            const schemaStringify = JSON.stringify(schema);
+            setSchemaInput(beautify ? jsBeautify.js(schemaStringify) : schemaStringify);
             setError('');
         } catch (e: any) {
             setError(e.message);
@@ -63,6 +67,10 @@ function App(): JSX.Element {
                     <label htmlFor='all-required'>
                         <input type='checkbox' checked={required} id='all-required' onChange={() => setRequired(!required)}/>
                         <span>All Required</span>
+                    </label>
+                    <label htmlFor='beautify'>
+                        <input type='checkbox' checked={beautify} id='beautify' onChange={() => setBeautify(!beautify)}/>
+                        <span>Beautify</span>
                     </label>
                 </div>
                 <textarea rows={20} cols={50} value={schemaInput} readOnly/>
