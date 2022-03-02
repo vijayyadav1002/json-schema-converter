@@ -61,8 +61,10 @@ function App(): JSX.Element {
     }
     return (
         <div className="App">
-            <h1>Convert JSON to JSON Schema</h1>
-            <header className="App-header">
+            <header>
+                <h1>Convert JSON to JSON Schema</h1>
+            </header>
+            <section>
                 <textarea rows={10} cols={50} value={jsonInput} onChange={e => setJsonInput(e.target.value)}/>
                 <div className='button-group'>
                     <button onClick={convertToSchema}>Convert</button>
@@ -72,24 +74,30 @@ function App(): JSX.Element {
                         <button>Copy</button>
                     </CopyToClipboard>
                     <div className='checkbox-group'>
-                        <label htmlFor='additional-properties'>
-                            <input type='checkbox' checked={isChecked} id='additional-properties' onChange={() => setIsChecked(!isChecked)}/>
-                            <span>Additional Properties</span>
-                        </label>
-                        <label htmlFor='all-required'>
-                            <input type='checkbox' checked={required} id='all-required' onChange={() => setRequired(!required)}/>
-                            <span>All Required</span>
-                        </label>
-                        <label htmlFor='beautify'>
-                            <input type='checkbox' checked={beautify} id='beautify' onChange={() => setBeautify(!beautify)}/>
-                            <span>Beautify</span>
-                        </label>
+                        <div>
+                            <label htmlFor='additional-properties'>
+                                <input type='checkbox' checked={isChecked} id='additional-properties' onChange={() => setIsChecked(!isChecked)}/>
+                                <span>Additional Properties</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label htmlFor='all-required'>
+                                <input type='checkbox' checked={required} id='all-required' onChange={() => setRequired(!required)}/>
+                                <span>All Required</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label htmlFor='beautify'>
+                                <input type='checkbox' checked={beautify} id='beautify' onChange={() => setBeautify(!beautify)}/>
+                                <span>Beautify</span>
+                            </label>
+                        </div>
                     </div>
                     {copy ? <div className='copied'>Copied.</div> : null}
                     {error && <p style={{color: "red"}}>{error}</p>}
                 </div>
                 <textarea rows={10} cols={50} value={schemaInput} readOnly/>
-            </header>
+            </section>
         </div>
     );
 }
