@@ -71,7 +71,6 @@ function App(): JSX.Element {
                                      onCopy={() => setCopied()}>
                         <button>Copy</button>
                     </CopyToClipboard>
-                    {copy ? <div className='copied'>Copied.</div> : null}
                     <div className='checkbox-group'>
                         <label htmlFor='additional-properties'>
                             <input type='checkbox' checked={isChecked} id='additional-properties' onChange={() => setIsChecked(!isChecked)}/>
@@ -86,6 +85,7 @@ function App(): JSX.Element {
                             <span>Beautify</span>
                         </label>
                     </div>
+                    {copy ? <div className='copied'>Copied.</div> : null}
                     {error && <p style={{color: "red"}}>{error}</p>}
                 </div>
                 <textarea rows={10} cols={50} value={schemaInput} readOnly/>
