@@ -62,7 +62,7 @@ function App(): JSX.Element {
         <div className="App">
             <header className="App-header">
                 <h1>Convert JSON to JSON Schema</h1>
-                <textarea rows={20} cols={50} value={jsonInput} onChange={e => setJsonInput(e.target.value)}/>
+                <textarea rows={10} cols={50} value={jsonInput} onChange={e => setJsonInput(e.target.value)}/>
                 {error && <p>{error}</p>}
                 <div className='button-group'>
                     <button onClick={convertToSchema}>Convert</button>
@@ -72,7 +72,7 @@ function App(): JSX.Element {
                         <button>Copy</button>
                     </CopyToClipboard>
                 </div>
-                <div>
+                <div className='checkbox-group'>
                     <label htmlFor='additional-properties'>
                         <input type='checkbox' checked={isChecked} id='additional-properties' onChange={() => setIsChecked(!isChecked)}/>
                         <span>Additional Properties</span>
@@ -86,8 +86,8 @@ function App(): JSX.Element {
                         <span>Beautify</span>
                     </label>
                 </div>
-                {copy ? <span style={{color: 'Yellow'}}>Copied.</span> : null}
-                <textarea rows={20} cols={50} value={schemaInput} readOnly/>
+                <textarea rows={10} cols={50} value={schemaInput} readOnly/>
+                {copy ? <span className='copied'>Copied.</span> : null}
             </header>
         </div>
     );
