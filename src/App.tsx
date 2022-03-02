@@ -71,7 +71,7 @@ function App(): JSX.Element {
                                      onCopy={() => setCopied()}>
                         <button>Copy</button>
                     </CopyToClipboard>
-                    {copy ? <span className='copied'>Copied.</span> : null}
+                    {copy ? <div className='copied'>Copied.</div> : null}
                     <div className='checkbox-group'>
                         <label htmlFor='additional-properties'>
                             <input type='checkbox' checked={isChecked} id='additional-properties' onChange={() => setIsChecked(!isChecked)}/>
