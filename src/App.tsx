@@ -2,6 +2,10 @@ import React, {useState} from 'react';
 // @ts-ignore
 import toJsonSchema from 'generate-schema';
 import './App.css';
+// @ts-ignore
+import jsBeautify from 'js-beautify';
+// @ts-ignore
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 interface SchemaType {
     type: string,
@@ -27,9 +31,15 @@ const addRequiredProperties = (data: SchemaType): SchemaType => {
 function App(): JSX.Element {
     const [error, setError] = useState('');
     const [required, setRequired] = useState(true);
+    const [beautify, setBeautify] = useState(true);
     const [jsonInput, setJsonInput] = useState('{"name": "Dan"}');
     const [schemaInput, setSchemaInput] = useState('{}');
     const [isChecked, setIsChecked] = useState(true);
+    const [copy, setCopy] = useState(false);
+    const setCopied = () => {
+        setCopy(true);
+        setTimeout(() => setCopy(false), 1000);
+    }
     const convertToSchema = (event: React.MouseEvent<HTMLButtonElement>) => {
         event && event.preventDefault();
         try {
@@ -37,36 +47,57 @@ function App(): JSX.Element {
             const schema = required ? addRequiredProperties(toSchema) : toSchema
             schema.additionalProperties = isChecked;
             delete schema.$schema;
-            setSchemaInput(JSON.stringify(schema));
+            const schemaStringify = JSON.stringify(schema);
+            setSchemaInput(beautify ? jsBeautify.js(schemaStringify) : schemaStringify);
             setError('');
         } catch (e: any) {
             setError(e.message);
         }
     };
     const clear = () => {
-        setJsonInput('');
+        setJsonInput('{"name": "Dan"}');
         setSchemaInput('');
+        setError('');
     }
     return (
         <div className="App">
-            <header className="App-header">
+            <header>
                 <h1>Convert JSON to JSON Schema</h1>
-                <textarea rows={20} cols={50} value={jsonInput} onChange={e => setJsonInput(e.target.value)}/>
-                {error && <p>{error}</p>}
+            </header>
+            <section>
+                <textarea rows={10} cols={50} value={jsonInput} onChange={e => setJsonInput(e.target.value)}/>
                 <div className='button-group'>
                     <button onClick={convertToSchema}>Convert</button>
-                    <button onClick={clear}>Clear</button>
-                    <label htmlFor='additional-properties'>
-                        <input type='checkbox' checked={isChecked} id='additional-properties' onChange={() => setIsChecked(!isChecked)}/>
-                        <span>Additional Properties</span>
-                    </label>
-                    <label htmlFor='all-required'>
-                        <input type='checkbox' checked={required} id='all-required' onChange={() => setRequired(!required)}/>
-                        <span>All Required</span>
-                    </label>
+                    <button onClick={clear}>Reset</button>
+                    <CopyToClipboard text={schemaInput}
+                                     onCopy={() => setCopied()}>
+                        <button>Copy</button>
+                    </CopyToClipboard>
+                    <div className='checkbox-group'>
+                        <div>
+                            <label htmlFor='additional-properties'>
+                                <input type='checkbox' checked={isChecked} id='additional-properties' onChange={() => setIsChecked(!isChecked)}/>
+                                <span>Additional Properties</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label htmlFor='all-required'>
+                                <input type='checkbox' checked={required} id='all-required' onChange={() => setRequired(!required)}/>
+                                <span>All Required</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label htmlFor='beautify'>
+                                <input type='checkbox' checked={beautify} id='beautify' onChange={() => setBeautify(!beautify)}/>
+                                <span>Beautify</span>
+                            </label>
+                        </div>
+                    </div>
+                    {copy ? <div className='copied'>Copied.</div> : null}
+                    {error && <p style={{color: "red"}}>{error}</p>}
                 </div>
-                <textarea rows={20} cols={50} value={schemaInput} readOnly/>
-            </header>
+                <textarea rows={10} cols={50} value={schemaInput} readOnly/>
+            </section>
         </div>
     );
 }

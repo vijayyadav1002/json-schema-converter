@@ -1,36 +1,85 @@
-.App {
-  text-align: center;
+html, body {
+  font-family: ui-monospace, sans-serif;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.App {
+  text-align: center;
+  box-sizing: border-box;
+}
+
+h1 {
+  padding: 0;
+  margin: 0;
+}
+
+header {
+  margin: 0;
+  background-color: #141E27;
+  color: #E0DDAA;
+  text-transform: uppercase;
+  min-height: 8vh;
+  vertical-align: middle;
+  display: grid;
+  align-content: center;
+}
+
+section {
+  background-color: #203239;
+  min-height: 92vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-evenly;
   font-size: calc(10px + 2vmin);
   color: white;
 }
 
 textarea {
-  width: 80%;
+  padding: 0.5rem 0 0 0;
+  min-width: 35vw;
+  font-family: monospace, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  background-color: #0F0E0E;
+  color: #E0DDAA;
 }
 
 button {
-  margin: 2rem 0 2rem 0;
-  padding: 2rem 1rem;
-  width: 20vmin;
-  background-color: dodgerblue;
-  color: #fff;
+  padding: 1.5rem 1rem;
+  width: 100%;
+  background-color: #EEEDDE;
+  color: #141E27;
   font-weight: 700;
   border: none;
   border-radius: .5rem;
   cursor: pointer;
   font-size: calc(10px + 1vmin);
-  margin-right: 1rem;
+  margin: 2rem 1rem 2rem 0;
+  text-transform: uppercase;
 }
 
 .button-group {
   font-size: calc(8px + 1vmin);
+  padding: 0 2rem 0 2rem;
+  min-width: 20vw;
+}
+
+.checkbox-group {
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.checkbox-group > div {
+  margin-bottom: .5rem;
+}
+
+.checkbox-group label span {
+  margin-left: .5rem;
+}
+
+.copied {
+  color: #ffff00;
+  font-weight: bold;
+  font-style: italic;
+  margin-bottom: .5rem;
 }
